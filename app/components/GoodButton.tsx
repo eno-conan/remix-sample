@@ -6,6 +6,7 @@ interface IProps {
 }
 
 
+{/* お気に入りに登録されていない場合は、塗りつぶしなしのGoodマークを表示 */ }
 export default function GoodButton(props: IProps) {
     const [checked, setChecked] = useState<boolean>(props.initState);
     const switchGoodOrNot = () => {
@@ -13,11 +14,11 @@ export default function GoodButton(props: IProps) {
     };
     return <>
         {checked ?
-            <button aria-label="BsHandThumbsUpFill">
+            <button aria-label="BsHandThumbsUpFill" data-testid="BsHandThumbsUpFill">
                 <BsHandThumbsUpFill size={"2rem"} onClick={switchGoodOrNot} />
             </button>
             :
-            <button aria-label="BsHandThumbsUp">
+            <button aria-label="BsHandThumbsUp" data-testid="BsHandThumbsUp">
                 <BsHandThumbsUp size={"2rem"} onClick={switchGoodOrNot} />
             </button>
         }
