@@ -47,10 +47,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Add() {
     const data = useLoaderData<typeof loader>();
-    const actionData = useActionData<typeof action>();
+    // const actionData = useActionData<typeof action>();
     const titleRef = useRef<HTMLInputElement>(null);
     const bodyRef = useRef<HTMLTextAreaElement>(null);
-    const apiKey = data.ENV.GOOGLE_API_KEY;
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: data.ENV.GOOGLE_API_KEY ?? ''
