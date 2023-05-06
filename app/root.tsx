@@ -12,6 +12,7 @@ import {
 
 import { getUser } from "~/session.server";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
+import Layout from "./components/layout";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStylesheetUrl },
@@ -32,7 +33,9 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <Outlet />
+        <Layout>
+          <Outlet />
+        </Layout>
         <ScrollRestoration />
         {/* https://remix.run/docs/en/main/components/scroll-restoration */}
         <Scripts />
