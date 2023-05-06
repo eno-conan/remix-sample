@@ -3,7 +3,7 @@ import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, useJsApiLoader } from '@react-google-maps/api';
 import type { LoaderArgs } from "@remix-run/node";
 
 const containerStyle = {
@@ -46,16 +46,15 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function Add() {
-    // const [apiKey, setApiKey] = useState("");
     const data = useLoaderData<typeof loader>();
-    // if (!apiKey) {
-    // setApiKey(data.ENV.GOOGLE_API_KEY ?? '');
-    // }
     const actionData = useActionData<typeof action>();
     const titleRef = useRef<HTMLInputElement>(null);
     const bodyRef = useRef<HTMLTextAreaElement>(null);
     const apiKey = data.ENV.GOOGLE_API_KEY;
-    // console.info(apiKey);
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: data.ENV.GOOGLE_API_KEY ?? ''
+    })
 
 
     const [position, setPosition] = useState<Position | null>(null);
@@ -124,9 +123,9 @@ export default function Add() {
                 <input id="image" type="file" accept="image/*" />
             </label>
         </div>
-        {/* <div>
-            <LoadScript googleMapsApiKey={apiKey ?? ''}>
-                <GoogleMap
+        <div>
+            {isLoaded ?
+                (<GoogleMap
                     mapContainerStyle={containerStyle}
                     center={center}
                     zoom={13}
@@ -135,8 +134,11 @@ export default function Add() {
                     <Marker position={positionAkiba} />
                     <Marker position={positionIwamotocho} />
                 </GoogleMap>
-            </LoadScript>
-        </div> */}
+                )
+                :
+                <></>
+            }
+        </div>
         <div className="text-right">
             <button
                 type="submit"
