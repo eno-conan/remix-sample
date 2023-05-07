@@ -1,11 +1,18 @@
 import type { V2_MetaFunction } from "@remix-run/node";
-import { Link, useTransition } from "@remix-run/react";
+import { Link } from "@remix-run/react";
+import { useState } from "react";
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
 const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
 
+
 export default function Index() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = () => {
+    setIsLoading(true);
+  }
 
   return (
     <div>
@@ -31,7 +38,8 @@ export default function Index() {
         <div>続きを見る</div>
       </div>
       <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
-        <Link to="/add">
+        {isLoading && <div>Loading...</div>}
+        <Link to="/add" onClick={handleClick}>
           <span className="text-2xl font-bold">記録を追加する</span>
         </Link>
       </div>

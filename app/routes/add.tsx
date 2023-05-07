@@ -6,9 +6,15 @@ import { useRef, useState, } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import type { LoaderArgs } from "@remix-run/node";
 
+
+interface Position {
+    lat: number;
+    lng: number;
+}
+
 const containerStyle = {
-    width: '30%',
-    height: '300px',
+    width: '40%',
+    height: '250px',
 };
 
 const center = {
@@ -24,11 +30,6 @@ const postionTokyo = {
 const postionOsaka = {
     lat: 34.70263090912583,
     lng: 135.4961759014006
-}
-
-interface Position {
-    lat: number;
-    lng: number;
 }
 
 // 追加実行
