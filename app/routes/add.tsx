@@ -2,13 +2,13 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import type { LoaderArgs } from "@remix-run/node";
 
 const containerStyle = {
-    width: '100%',
-    height: '400px',
+    width: '30%',
+    height: '300px',
 };
 
 const center = {
@@ -146,7 +146,7 @@ export default function Add() {
                         大阪駅
                     </button>
                 </div>
-                <div className="mx-10">
+                <div className="mx-14">
                     {isLoaded ?
                         (<GoogleMap
                             mapContainerStyle={containerStyle}

@@ -1,13 +1,12 @@
 import type { V2_MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
-// import { Link } from "@remix-run/react";
-// import { useOptionalUser } from "~/utils";
+import { Link, useTransition } from "@remix-run/react";
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
 const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
 
 export default function Index() {
+
   return (
     <div>
       <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
