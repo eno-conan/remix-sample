@@ -2,7 +2,7 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useRef, useState, } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import type { LoaderArgs } from "@remix-run/node";
 
@@ -153,14 +153,13 @@ export default function Add() {
                             center={position ?? center}
                             zoom={13}
                             onClick={handleMapClick}
-                        // onMouseOver
                         >
                             <Marker position={position ?? postionTokyo} />
                             <input id="position" name="position" type="hidden" value={`${position?.lat!}/${position?.lng!}`} />
                         </GoogleMap>
                         )
                         :
-                        <></>
+                        <><img className="w-1/4" src="https://via.placeholder.com/640x360.png" alt="Card image" /></>
                     }
                 </div>
                 <div className="mr-10 mb-6 text-right">
