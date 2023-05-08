@@ -6,6 +6,9 @@ Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ### 参考
 https://github.com/remix-run/remix/issues/4236#issuecomment-1264444539
+- [環境変数をroot.tsxで定義](https://zenn.dev/steelydylan/articles/remix-cloudflare-workers)
+  - 環境変数をroot.tsxで定義して、各コンポーネントで、window.ENV.XXXの形式で呼び出しできるようにする
+  - 公式サイト：https://remix.run/docs/en/1.16.0/guides/envvars#browser-environment-variables
 
 ```sh
 npx create-remix@latest --template remix-run/indie-stack

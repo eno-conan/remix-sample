@@ -1,10 +1,19 @@
-import type { V2_MetaFunction } from "@remix-run/node";
+import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useState } from "react";
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
 const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
+
+export const loader = async ({ request }: LoaderArgs) => {
+  return json({
+    ENV: {
+      GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+    },
+  });
+};
+
 
 
 export default function Index() {

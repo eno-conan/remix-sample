@@ -27,8 +27,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
     },
-    // https://sergiodxa.com/articles/use-process-env-client-side-with-remix
-    // https://dev.to/remix-run-br/type-safe-environment-variables-on-both-client-and-server-with-remix-54l5
+    // https://remix.run/docs/en/1.16.0/guides/envvars#browser-environment-variables
   });
 };
 
@@ -47,11 +46,11 @@ export default function App() {
           <Outlet />
         </Layout>
         <ScrollRestoration />
-        {/* <script
+        <script
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
           }}
-        /> */}
+        />
         {/* https://remix.run/docs/en/main/components/scroll-restoration */}
         <Scripts />
         {/* https://remix.run/docs/en/main/components/scripts */}
