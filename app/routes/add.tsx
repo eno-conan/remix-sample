@@ -1,10 +1,11 @@
 
 import type { ActionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json, redirect, unstable_parseMultipartFormData, unstable_createFileUploadHandler } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { useRef, useState, } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import type { LoaderArgs } from "@remix-run/node";
+import { createClient } from "@supabase/supabase-js";
 
 
 interface Position {
@@ -13,7 +14,7 @@ interface Position {
 }
 
 const containerStyle = {
-    width: '40%',
+    width: '50%',
     height: '250px',
 };
 
@@ -34,13 +35,24 @@ const postionOsaka = {
 
 // 追加実行
 export const action = async ({ request }: ActionArgs) => {
-    const formData = await request.formData();
-    const title = formData.get("title");
-    const comment = formData.get("comment");
-    const placeImage = formData.get("placeImage");
-    const position = formData.get("position");
+    // const formData = await request.formData();
+    // const title = formData.get("title");
+    // const comment = formData.get("comment");
+    // const position = formData.get("position");
 
-    console.info(title, comment, placeImage, position);
+    const uploadHandler = unstable_createFileUploadHandler({
+        // maxFileSize: '10000000',
+        directory: "public/uploads",
+        file: ({ filename }) => filename,
+    });
+    const formDataMultiPart = await unstable_parseMultipartFormData(
+        request,
+        uploadHandler
+    );
+    const placeImage = formDataMultiPart.get("placeImage") as File;
+
+    // console.info(title, comment, placeImage, position);
+    console.info(placeImage);
     return redirect(`/`);
 }
 
@@ -49,24 +61,39 @@ export const loader = async ({ request }: LoaderArgs) => {
     return json({
         ENV: {
             GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+            SUPABASE_URL: process.env.SUPABASE_URL,
+            SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
         },
     });
 };
 
 export default function Add() {
     const data = useLoaderData<typeof loader>();
-    const actionData = useActionData<typeof action>();
+    const [position, setPosition] = useState<Position | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+
+    const supabaseUrl = data.ENV.SUPABASE_URL;
+    const supabaseAnonKey = data.ENV.SUPABASE_ANON_KEY;
+    // SupabaseのClient定義
+    const supabaseClient = createClient(supabaseUrl!, supabaseAnonKey!)
+
     const titleRef = useRef<HTMLInputElement>(null);
     const bodyRef = useRef<HTMLTextAreaElement>(null);
 
-    const [position, setPosition] = useState<Position | null>(null);
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: data.ENV.GOOGLE_API_KEY ?? ''
     })
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setFile(event.target.files[0]);
+        }
+    };
+
     // Map上にポインタを設定
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
+        console.info(event.latLng?.lng());
         const newPosition = {
             lat: event.latLng!.lat(),
             lng: event.latLng!.lng(),
@@ -79,10 +106,30 @@ export default function Add() {
         setPosition(position => postionOsaka);
     }
 
+    const handleSubmit = async () => {
+        if (file) {
+            const { data, error } = await supabaseClient.storage
+                .from('place-images')
+                .upload(`image/${file.name}`, file, {
+                    cacheControl: '3600',
+                    upsert: true,
+                });
+            if (error) {
+                console.error(error);
+            } else {
+                alert('Upload successful');
+                window.location.href = "/upload";
+            }
+        } else {
+            alert('ファイルを選択してください')
+        }
+    };
+
     return (
         <div className="bg-gray-100">
             <Form
                 method="post"
+                encType="multipart/form-data"
                 style={{
                     display: "flex",
                     flexDirection: "column",
@@ -93,7 +140,8 @@ export default function Add() {
                 <div className="mx-10 mt-4">
                     <label className="flex w-full flex-col gap-1">
                         <label htmlFor="title">タイトル</label>
-                        <div className="text-red-500 font-semibold text-xs">必須入力です</div>
+                        <div className="text-red-500 font-semibold text-xs">必須
+                            入力です</div>
                         <input
                             id="title"
                             ref={titleRef}
@@ -137,7 +185,7 @@ export default function Add() {
                     <label className="flex w-1/4 flex-col gap-1">
                         <label htmlFor="image">画像登録</label>
                         <div className="text-green-600 font-bold">未登録でも構いません</div>
-                        <input id="image" name="placeImage" type="file" accept="image/*" />
+                        <input id="image" name="placeImage" type="file" accept="image/*" onChange={handleChange} />
                     </label>
                 </div>
                 <div className="mx-10 mt-6">
@@ -160,7 +208,7 @@ export default function Add() {
                         </GoogleMap>
                         )
                         :
-                        <><img className="w-1/4" src="https://via.placeholder.com/640x360.png" alt="Card image" /></>
+                        <></>
                     }
                 </div>
                 <div className="mr-10 mb-6 text-right">

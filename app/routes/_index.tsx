@@ -43,6 +43,12 @@ export default function Index() {
           <span className="text-2xl font-bold">記録を追加する</span>
         </Link>
       </div>
+      <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
+        {isLoading && <div>Loading...</div>}
+        <Link to="/upload">
+          <span className="text-2xl font-bold">画像をアップロードする</span>
+        </Link>
+      </div>
 
     </div>
   );

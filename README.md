@@ -4,6 +4,9 @@
 
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
+### 参考
+https://github.com/remix-run/remix/issues/4236#issuecomment-1264444539
+
 ```sh
 npx create-remix@latest --template remix-run/indie-stack
 ```
