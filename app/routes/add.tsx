@@ -1,8 +1,8 @@
 
 import type { ActionArgs } from "@remix-run/node";
-import { json, redirect, unstable_parseMultipartFormData, unstable_createFileUploadHandler } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import { useRef, useState, } from "react";
+import { json, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { useState, } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import type { LoaderArgs } from "@remix-run/node";
 import { createClient } from "@supabase/supabase-js";
@@ -12,48 +12,23 @@ interface Position {
     lat: number;
     lng: number;
 }
-
 const containerStyle = {
     width: '50%',
     height: '250px',
 };
-
 const center = {
     lat: 35.681167,
     lng: 139.767052,
 };
-
+// 東京駅
 const postionTokyo = {
     lat: 35.68181227967,
     lng: 139.76692300691604
 }
-
+// 大阪駅
 const postionOsaka = {
     lat: 34.70263090912583,
     lng: 135.4961759014006
-}
-
-// 追加実行
-export const action = async ({ request }: ActionArgs) => {
-    // const formData = await request.formData();
-    // const title = formData.get("title");
-    // const comment = formData.get("comment");
-    // const position = formData.get("position");
-
-    const uploadHandler = unstable_createFileUploadHandler({
-        // maxFileSize: '10000000',
-        directory: "public/uploads",
-        file: ({ filename }) => filename,
-    });
-    const formDataMultiPart = await unstable_parseMultipartFormData(
-        request,
-        uploadHandler
-    );
-    const placeImage = formDataMultiPart.get("placeImage") as File;
-
-    // console.info(title, comment, placeImage, position);
-    console.info(placeImage);
-    return redirect(`/`);
 }
 
 // 画面表示時にGoogle API Keyの値取得
@@ -68,23 +43,18 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function Add() {
-    const data = useLoaderData<typeof loader>();
+    const [title, setTitle] = useState("");
     const [position, setPosition] = useState<Position | null>(null);
     const [file, setFile] = useState<File | null>(null);
 
-    const supabaseUrl = data.ENV.SUPABASE_URL;
-    const supabaseAnonKey = data.ENV.SUPABASE_ANON_KEY;
-    // SupabaseのClient定義
-    const supabaseClient = createClient(supabaseUrl!, supabaseAnonKey!)
-
-    const titleRef = useRef<HTMLInputElement>(null);
-    const bodyRef = useRef<HTMLTextAreaElement>(null);
-
+    const data = useLoaderData<typeof loader>();
+    // Googleマップの読み込み
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: data.ENV.GOOGLE_API_KEY ?? ''
     })
 
+    // 画像ファイル設定
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setFile(event.target.files[0]);
@@ -93,33 +63,36 @@ export default function Add() {
 
     // Map上にポインタを設定
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
-        console.info(event.latLng?.lng());
         const newPosition = {
             lat: event.latLng!.lat(),
             lng: event.latLng!.lng(),
         };
         setPosition(newPosition);
     };
-
-    // 中央に表示する位置を更新する
+    // 中央の表示位置更新
     const updateStartPosition = (place: string) => {
         setPosition(position => postionOsaka);
     }
 
+    // 送信（テーブル・ストレージへの登録）
     const handleSubmit = async () => {
+        // SupabaseのClient定義
+        const supabaseUrl = data.ENV.SUPABASE_URL;
+        const supabaseAnonKey = data.ENV.SUPABASE_ANON_KEY;
+        const supabaseClient = createClient(supabaseUrl!, supabaseAnonKey!)
         if (file) {
-            const { data, error } = await supabaseClient.storage
-                .from('place-images')
-                .upload(`image/${file.name}`, file, {
-                    cacheControl: '3600',
-                    upsert: true,
-                });
-            if (error) {
-                console.error(error);
-            } else {
-                alert('Upload successful');
-                window.location.href = "/upload";
-            }
+            // const { data, error } = await supabaseClient.storage
+            //     .from('place-images')
+            //     .upload(`image/${file.name}`, file, {
+            //         cacheControl: '3600',
+            //         upsert: true,
+            //     });
+            // if (error) {
+            //     console.error(error);
+            // } else {
+            //     alert('Upload successful');
+            // window.location.href = "/";
+            // }
         } else {
             alert('ファイルを選択してください')
         }
@@ -127,99 +100,79 @@ export default function Add() {
 
     return (
         <div className="bg-gray-100">
-            <Form
-                method="post"
-                encType="multipart/form-data"
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 8,
-                    width: "100%",
-                }}
-            >
-                <div className="mx-10 mt-4">
-                    <label className="flex w-full flex-col gap-1">
-                        <label htmlFor="title">タイトル</label>
-                        <div className="text-red-500 font-semibold text-xs">必須
-                            入力です</div>
-                        <input
-                            id="title"
-                            ref={titleRef}
-                            name="title"
-                            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-                        // aria-invalid={actionData?.errors?.title ? true : undefined}
-                        // aria-errormessage={
-                        //     actionData?.errors?.title ? "title-error" : undefined
-                        // }
-                        />
-                    </label>
-                    {/* {actionData?.errors?.title ? (
-                <div className="pt-1 text-red-700" id="title-error">
-                    {actionData.errors.title}
-                </div>
-            ) : null} */}
-                </div>
+            <div className="mx-10 mt-4">
+                <label className="flex w-full flex-col gap-1">
+                    <label htmlFor="title">タイトル</label>
+                    <div className="text-red-500 font-semibold text-xs">必須
+                        入力です</div>
+                    <input
+                        id="title"
+                        // name="title"
+                        value={title}
+                        className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+                        onChange={(e) => setTitle(e.target.value)}
+                    // aria-invalid={actionData?.errors?.title ? true : undefined}
+                    // aria-errormessage={
+                    //     actionData?.errors?.title ? "title-error" : undefined
+                    // }
+                    />
+                </label>
+            </div>
 
-                <div className="mx-10">
-                    <label className="flex w-full flex-col gap-1">
-                        <label htmlFor="comment">コメント</label>
-                        <div className="text-red-500 font-semibold text-xs">必須入力です</div>
-                        <textarea
-                            ref={bodyRef}
-                            name="comment"
-                            rows={5}
-                            className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
-                        // aria-invalid={actionData?.errors?.body ? true : undefined}
-                        // aria-errormessage={
-                        //     actionData?.errors?.body ? "body-error" : undefined
-                        // }
-                        />
-                        {/* {actionData?.errors?.body ? (
-                <div className="pt-1 text-red-700" id="body-error">
-                    {actionData.errors.body}
-                </div>
-            ) : null} */}
-                    </label>
-                </div>
-                <div className="mx-10 mt-6">
-                    <label className="flex w-1/4 flex-col gap-1">
-                        <label htmlFor="image">画像登録</label>
-                        <div className="text-green-600 font-bold">未登録でも構いません</div>
-                        <input id="image" name="placeImage" type="file" accept="image/*" onChange={handleChange} />
-                    </label>
-                </div>
-                <div className="mx-10 mt-6">
-                    <label htmlFor="position">訪問場所</label>
+            <div className="mx-10 mt-4">
+                <label className="flex w-full flex-col gap-1">
+                    <label htmlFor="comment">コメント</label>
+                    <div className="text-red-500 font-semibold text-xs">必須入力です</div>
+                    <textarea
+                        // name="comment"
+                        rows={3}
+                        className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
+                    // aria-invalid={actionData?.errors?.body ? true : undefined}
+                    // aria-errormessage={
+                    //     actionData?.errors?.body ? "body-error" : undefined
+                    // }
+                    />
+                </label>
+            </div>
+            <div className="mx-10 mt-6">
+                <label className="flex w-1/4 flex-col gap-1">
+                    <label htmlFor="image">画像登録</label>
                     <div className="text-green-600 font-bold">未登録でも構いません</div>
-                    <button type="button" className="bg-green-200 border-e-2" onClick={() => updateStartPosition('Osaka')}>
-                        大阪駅
-                    </button>
-                </div>
-                <div className="mx-14">
-                    {isLoaded ?
-                        (<GoogleMap
-                            mapContainerStyle={containerStyle}
-                            center={position ?? center}
-                            zoom={13}
-                            onClick={handleMapClick}
-                        >
-                            <Marker position={position ?? postionTokyo} />
-                            <input id="position" name="position" type="hidden" value={`${position?.lat!}/${position?.lng!}`} />
-                        </GoogleMap>
-                        )
-                        :
-                        <></>
-                    }
-                </div>
-                <div className="mr-10 mb-6 text-right">
-                    <button
-                        type="submit"
-                        className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-800 focus:bg-green-800 mr-4"
+                    <input id="image" type="file" accept="image/*" onChange={handleChange} />
+                </label>
+            </div>
+            <div className="mx-10 mt-6">
+                <label htmlFor="position">訪問場所</label>
+                <div className="text-green-600 font-bold">未登録でも構いません</div>
+                <button type="button" className="bg-green-200 border-e-2" onClick={() => updateStartPosition('Osaka')}>
+                    大阪駅
+                </button>
+            </div>
+            <div className="mx-10 mt-2">
+                {isLoaded ?
+                    (<GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={position ?? center}
+                        zoom={13}
+                        onClick={handleMapClick}
                     >
-                        確認画面へ
-                    </button>
-                </div>
-            </Form>
+                        <Marker position={position ?? postionTokyo} />
+                        <input id="position" type="hidden" value={`${position?.lat!}/${position?.lng!}`} />
+                    </GoogleMap>
+                    )
+                    :
+                    <></>
+                }
+            </div>
+            <div className="mr-10 my-6 text-right">
+                <button
+                    onClick={handleSubmit}
+                    type="submit"
+                    className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-800 focus:bg-green-800 mr-4"
+                >
+                    確認画面へ
+                </button>
+            </div>
         </div>
     )
 
