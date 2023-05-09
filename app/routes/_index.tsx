@@ -19,12 +19,15 @@ export const loader = async ({ request }: LoaderArgs) => {
     })
   // 画像ファイル名を格納し、画面表示用のURLを取得
   const names: string[] = []
-  data!.forEach((p: any) => {
-    // .emptyFolderPlaceholderの場合は表示しない
-    if (p.name !== '.emptyFolderPlaceholder') {
-      names.push(`image/${p.name}`);
-    }
-  })
+  // dataが1件もなければ、データ取得はsignedUrlの取得不要
+  if (data!.length > 0) {
+    data!.forEach((p: any) => {
+      // .emptyFolderPlaceholderの場合は取得対象外
+      if (p.name !== '.emptyFolderPlaceholder') {
+        names.push(`image/${p.name}`);
+      }
+    })
+  }
   if (names.length > 0) {
     const signedUrls = await supabaseClient
       .storage
@@ -54,7 +57,7 @@ export default function Index() {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">最近の写真</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {data.signedUrls!.length > 0 && data.signedUrls!.map((p) => (
+            {data.signedUrls!.length > 0 ? data.signedUrls!.map((p) => (
               <div className="col-span-1" key={p.signedUrl}>
                 <div className="bg-white rounded-lg overflow-hidden shadow-md">
                   <img className="w-full" src={p.signedUrl} alt={p.signedUrl} />
@@ -64,7 +67,9 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) :
+              <>画像が登録されていません</>
+            }
           </div>
         </div>
       </main>
