@@ -41,6 +41,9 @@ export const loader = async ({ request }: LoaderArgs) => {
       signedUrls: []
     });
   }
+  // return json({
+  //   signedUrls: []
+  // });
 };
 
 export default function Index() {
@@ -53,22 +56,28 @@ export default function Index() {
 
   return (
     <div>
-      <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
+      <main className="relative min-h-0 bg-white sm:flex sm:items-center sm:justify-center">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">最近の写真</div>
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 text-xl my-4">最近の写真</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {data.signedUrls!.length > 0 ? data.signedUrls!.map((p) => (
               <div className="col-span-1" key={p.signedUrl}>
-                <div className="bg-white rounded-lg overflow-hidden shadow-md">
-                  <img className="w-full" src={p.signedUrl} alt={p.signedUrl} />
-                  <div className="p-4">
+                <div className="bg-white rounded-lg overflow-hidden shadow-md h-64 hover:scale-105">
+                  {/* <Link to="/detail" onClick={() => console.log(p.signedUrl)} > */}
+                  <Link to={`/detail?url=${p.signedUrl}`} >
+                    <img className="h-64 cursor-pointer" src={p.signedUrl} alt={p.signedUrl} width={250} height={250} />
+                  </Link>
+                  {/* <div className="p-4">
                     <h3 className="font-medium text-lg">Text</h3>
                     <p className="text-gray-500 mt-2">Card description</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
-            )) :
-              <>画像が登録されていません</>
+            ))
+              :
+              <>
+                <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">画像が登録されていません</div>
+              </>
             }
           </div>
         </div>
@@ -79,16 +88,9 @@ export default function Index() {
       <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
         {isLoading && <div>Loading...</div>}
         <Link to="/add" onClick={handleClick}>
-          <span className="text-2xl font-bold">記録を追加する</span>
+          <span className="text-2xl font-bold">記録を追加</span>
         </Link>
       </div>
-      <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
-        {isLoading && <div>Loading...</div>}
-        <Link to="/upload">
-          <span className="text-2xl font-bold">画像をアップロードする</span>
-        </Link>
-      </div>
-
     </div>
   );
 }
