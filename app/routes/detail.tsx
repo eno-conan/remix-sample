@@ -1,13 +1,15 @@
-import { json, LoaderArgs } from "@remix-run/node";
-import { useLoaderData, useParams, useSearchParams } from "@remix-run/react";
+import { useState } from "react";
+import { useLocation } from 'react-router-dom';
 
 export default function Detail() {
-    const [searchParams] = useSearchParams();
-
-    const url = searchParams.get('url');
+    const location = useLocation();
+    const [signedUrl, setSignedUrl] = useState<{ url: string }>(location.state as { url: string })
     return (
         <>
-            <img className="h-64 cursor-pointer" src={url!} alt={"image"} width={250} height={250} />
+            {signedUrl ?
+                <img className="h-64 cursor-pointer" src={signedUrl.url!} alt={"image"} width={250} height={250} />
+                : <></>
+            }
             Detail
         </>
     )

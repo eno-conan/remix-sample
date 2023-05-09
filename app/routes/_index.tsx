@@ -1,11 +1,12 @@
 import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
-const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
+// const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
 
 export const loader = async ({ request }: LoaderArgs) => {
   const supabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!)
@@ -47,12 +48,19 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function Index() {
-  const [isLoading, setIsLoading] = useState(false);
   const data = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    setIsLoading(true);
+  const displayDetail = (url: string) => {
+    // TODO:このままのURLの場合、参照リンクにした場合に表示できなくなるので、もう少し工夫が必要
+    navigate("/detail", { state: { url: url } });
   }
+
+  // ローディング表示管理
+  const [isLoading, setIsLoading] = useState(true);
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
 
   return (
     <div>
@@ -63,14 +71,12 @@ export default function Index() {
             {data.signedUrls!.length > 0 ? data.signedUrls!.map((p) => (
               <div className="col-span-1" key={p.signedUrl}>
                 <div className="bg-white rounded-lg overflow-hidden shadow-md h-64 hover:scale-105">
-                  {/* <Link to="/detail" onClick={() => console.log(p.signedUrl)} > */}
-                  <Link to={`/detail?url=${p.signedUrl}`} >
-                    <img className="h-64 cursor-pointer" src={p.signedUrl} alt={p.signedUrl} width={250} height={250} />
-                  </Link>
-                  {/* <div className="p-4">
-                    <h3 className="font-medium text-lg">Text</h3>
-                    <p className="text-gray-500 mt-2">Card description</p>
-                  </div> */}
+                  {/* 画像読み込みの間にローディング表示 */}
+                  {isLoading && <div className="items-center text-xl px-8">Loading...</div>}
+                  <img className="h-64 cursor-pointer" src={p.signedUrl} alt={p.signedUrl} width={250} height={250}
+                    onLoad={handleLoad}
+                    style={isLoading ? { display: 'none' } : {}}
+                    onClick={() => displayDetail(p.signedUrl)} />
                 </div>
               </div>
             ))
@@ -83,11 +89,15 @@ export default function Index() {
         </div>
       </main>
       <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
+        {/* 一覧画面表示：
+        表示形式1：画像小さめでテキスト付きの表示形式
+        表示形式2：トップ画面の延長の形で、画像のみの表示で30枚まで表示
+        それ以上は別ページで表示
+        */}
         <div>続きを見る</div>
       </div>
       <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
-        {isLoading && <div>Loading...</div>}
-        <Link to="/add" onClick={handleClick}>
+        <Link to="/add">
           <span className="text-2xl font-bold">記録を追加</span>
         </Link>
       </div>
