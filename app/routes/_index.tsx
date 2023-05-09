@@ -94,14 +94,18 @@ export default function Index() {
         表示形式2：トップ画面の延長の形で、画像のみの表示で30枚まで表示
         それ以上は別ページで表示
         */}
-        <div>続きを見る</div>
+        <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
+          <Link to="/list">
+            <div>続きを見る</div>
+          </Link>
+        </div>
       </div>
       <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">
         <Link to="/add">
           <span className="text-2xl font-bold">記録を追加</span>
         </Link>
       </div>
-    </div>
+    </div >
   );
 }
 
