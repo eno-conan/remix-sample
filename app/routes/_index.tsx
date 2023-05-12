@@ -1,8 +1,8 @@
 import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
-import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
-import { Link } from 'react-router-dom';
+// import { useLoaderData, useNavigate } from "@remix-run/react";
+// import { createClient } from "@supabase/supabase-js";
+// import { useState } from "react";
+// import { Link } from 'react-router-dom';
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
@@ -12,27 +12,18 @@ export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 export default function Index() {
 
   return (
-    <div>
-      <main className="relative min-h-0 bg-white sm:flex sm:items-center sm:justify-center">
-        {/* TODO:ここにサイトの紹介？みたいな画像を1枚入れて文章を表示して・・・ */}
-        <div className="sm:items-center sm:justify-center mt-4 text-xl">
-          {/* 一覧画面表示：
-        表示形式1：画像小さめでテキスト付きの表示形式
-        表示形式2：トップ画面の延長の形で、画像のみの表示で30枚まで表示
-        それ以上は別ページで表示
-        */}
-          <div>
-            <Link to="/top">
-              <div className="text-2xl font-bold">一覧表示</div>
-            </Link>
+    <>
+      {/* <main className="relative min-h-0 bg-white sm:flex sm:items-center sm:justify-center"> */}
+      <main className="bg-gray-200 sm:items-center sm:justify-center mt-20">
+        <div className="px-4 relative w-full">
+          <img src="/index.jpg" alt="Sample Image" className="w-full h-1/2 rounded relative my-2" />
+          <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
+            <p className="text-center max-w-md px-4">{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod faucibus dui vitae tempus. Donec nec urna at enim facilisis dignissim. Sed non arcu rhoncus, bibendum sem a, sagittis velit. Nunc aliquam auctor orci, sed gravida felis rhoncus vel. Praesent gravida nunc id tellus cursus vestibulum."}</p>
           </div>
-          <Link to="/add">
-            <span className="text-2xl font-bold">記録を追加</span>
-          </Link>
         </div>
-        {/* <div>Hello HistorySite</div> */}
+        {/* TODO:ここにサイトの紹介？みたいな画像を1枚入れて文章を表示して・・・ */}
       </main>
-    </div>
+    </>
   );
 }
 

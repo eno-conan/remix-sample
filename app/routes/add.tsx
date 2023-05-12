@@ -174,31 +174,33 @@ export default function Add() {
     // ========================================
 
     return (
-        <div className="bg-gray-100">
-            <div className="mx-10">
-                {TitleField()}
+        <main className="bg-gray-200 sm:items-center sm:justify-center mt-20">
+            <div className="bg-gray-100">
+                <div className="mx-10">
+                    {TitleField()}
+                </div>
+                <div className="mx-10 mt-4">
+                    {CommentField()}
+                </div>
+                <div className="mx-10 mt-6">
+                    {ImageField()}
+                </div>
+                <div className="mx-10 mt-6">
+                    {ChangeCenterPlaceCompo()}
+                </div>
+                <div className="mx-10 mt-2">
+                    <GoogleMapField position={position} setPosition={setPosition} apiKey={data.ENV.GOOGLE_API_KEY!} />
+                </div>
+                <div className="mr-10 my-6 text-right">
+                    <button
+                        onClick={handleSubmit}
+                        type="submit"
+                        className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-800 focus:bg-green-800 mr-4"
+                    >
+                        確認画面へ
+                    </button>
+                </div>
             </div>
-            <div className="mx-10 mt-4">
-                {CommentField()}
-            </div>
-            <div className="mx-10 mt-6">
-                {ImageField()}
-            </div>
-            <div className="mx-10 mt-6">
-                {ChangeCenterPlaceCompo()}
-            </div>
-            <div className="mx-10 mt-2">
-                <GoogleMapField position={position} setPosition={setPosition} apiKey={data.ENV.GOOGLE_API_KEY!} />
-            </div>
-            <div className="mr-10 my-6 text-right">
-                <button
-                    onClick={handleSubmit}
-                    type="submit"
-                    className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-800 focus:bg-green-800 mr-4"
-                >
-                    確認画面へ
-                </button>
-            </div>
-        </div>
+        </main>
     )
 }
