@@ -63,6 +63,7 @@ export default function List() {
         <>
             <button className="mt-4 mx-4 text-xl bg-green-300" onClick={() => switchDisplayWay()}>表示形式切り替え</button>
             <div className="mt-4 mx-4" onClick={() => switchDisplayWay()}>画像と説明 / 画像のみ に切り替えができます</div>
+            {/* TODO:切り替えるときにアニメーションとか入れたい */}
             {displayWay === 0 ?
                 <div className="grid grid-cols-3 gap-4 mt-4 mx-4">
                     {items.slice(0, 20).map((item) => (
