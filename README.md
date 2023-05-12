@@ -12,6 +12,8 @@ https://github.com/remix-run/remix/issues/4236#issuecomment-1264444539
 - [navigateを使って画面遷移する際のパラメータの渡し方・受け取り方](https://zenn.dev/horisan/articles/2aeaf0bd3fb70f)
 - [一定時間ごとに再取得を行う処理](https://dev.to/vanxh/data-revalidation-in-remix-2egc)
   - Nextjsの場合、`revalidate`を使用して実装になるが、Remixの場合は異なるので、その実装方法確認
+- [リンククリックから画面表示までのプログレスバー表示](https://zenn.dev/qaynam/articles/611ab136a93e89)
+  - emotioncssというライブラリを用いて実装
 
 
 ```sh

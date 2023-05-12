@@ -30,6 +30,7 @@
     "/public/build"
   ],
   "dependencies": {
+    "@emotion/css": "^11.11.0",
     "@prisma/client": "^4.12.0",
     "@react-google-maps/api": "^2.18.1",
     "@remix-run/css-bundle": "^1.15.0",

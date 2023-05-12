@@ -21,7 +21,6 @@ export default function Index() {
             <p className="text-center max-w-md px-4">{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod faucibus dui vitae tempus. Donec nec urna at enim facilisis dignissim. Sed non arcu rhoncus, bibendum sem a, sagittis velit. Nunc aliquam auctor orci, sed gravida felis rhoncus vel. Praesent gravida nunc id tellus cursus vestibulum."}</p>
           </div>
         </div>
-        {/* TODO:ここにサイトの紹介？みたいな画像を1枚入れて文章を表示して・・・ */}
       </main>
     </>
   );

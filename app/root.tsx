@@ -8,12 +8,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData
+  useLoaderData,
+  useTransition
 } from "@remix-run/react";
 
 import { getUser } from "~/session.server";
 import tailwindStylesheetUrl from "~/styles/tailwind.css";
 import Layout from "./components/layout";
+import ProgressBar from "./components/ProgressBar";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStylesheetUrl },
@@ -32,6 +34,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export default function App() {
+  const transition = useTransition();
   const data = useLoaderData<typeof loader>();
   return (
     <html lang="en" className="h-full">
@@ -55,6 +58,7 @@ export default function App() {
         <Scripts />
         {/* https://remix.run/docs/en/main/components/scripts */}
         <LiveReload />
+        {transition.state === 'loading' && <ProgressBar />}
         {/* https://remix.run/docs/en/main/components/live-reload */}
       </body>
     </html>
