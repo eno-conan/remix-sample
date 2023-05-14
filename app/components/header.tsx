@@ -18,8 +18,8 @@ const Header = () => {
                 . <Link to="/add" className="inline-block px-4 py-2 text-green-500 text-lg font-semibold hover:underline">
                     新しく記録を追加する
                 </Link>
-                . <Link to="." className="inline-block px-4 py-2 text-green-500 text-lg font-semibold hover:underline">
-                    ？？？
+                . <Link to="/search" className="inline-block px-4 py-2 text-green-500 text-lg font-semibold hover:underline">
+                    候補地を探す
                 </Link>
                 . <Link to="." className="inline-block px-4 py-2 text-green-500 text-lg font-semibold hover:underline">
                     ？？？

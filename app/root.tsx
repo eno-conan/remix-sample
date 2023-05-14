@@ -9,7 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useTransition
+  useNavigation,
 } from "@remix-run/react";
 
 import { getUser } from "~/session.server";
@@ -28,13 +28,14 @@ export const loader = async ({ request }: LoaderArgs) => {
     ENV: {
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     },
     // https://remix.run/docs/en/1.16.0/guides/envvars#browser-environment-variables
   });
 };
 
 export default function App() {
-  const transition = useTransition();
+  const navigation = useNavigation();
   const data = useLoaderData<typeof loader>();
   return (
     <html lang="en" className="h-full">
@@ -58,7 +59,7 @@ export default function App() {
         <Scripts />
         {/* https://remix.run/docs/en/main/components/scripts */}
         <LiveReload />
-        {transition.state === 'loading' && <ProgressBar />}
+        {navigation.state === 'loading' && <ProgressBar />}
         {/* https://remix.run/docs/en/main/components/live-reload */}
       </body>
     </html>
