@@ -2,14 +2,16 @@ import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
-import { useRevalidateOnInterval } from "~/hooks/useRevalidateOnInterval";
-
-
-// const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
+// import { cache } from "~/utils/cache";
 
 export const loader = async ({ request }: LoaderArgs) => {
     // TODO:Supabaseの処理をFunctionに移行したい=====
+    // if (cache.has("GitHubRepos")) {
+    //     console.info('use cache')
+    //     return json(cache.get("GitHubRepos"));
+    // }
     const supabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!)
+    const names: string[] = []
     const { data, error } = await supabaseClient
         .storage
         .from('place-images')
@@ -19,7 +21,6 @@ export const loader = async ({ request }: LoaderArgs) => {
             sortBy: { column: 'name', order: 'asc' },
         })
     // 画像ファイル名を格納し、画面表示用のURLを取得
-    const names: string[] = []
     // dataが1件もなければ、データ取得はsignedUrlの取得不要
     if (data!.length > 0) {
         data!.forEach((p: any) => {
@@ -33,10 +34,15 @@ export const loader = async ({ request }: LoaderArgs) => {
         const signedUrls = await supabaseClient
             .storage
             .from('place-images')
-            .createSignedUrls(names, 60)
+            .createSignedUrls(names, 600)
+        // cache.set("GitHubRepos", {
+        //     signedUrls: signedUrls.data,
+        //     names: names
+        // }, 1 * 1 * 1000);
         return json({
             signedUrls: signedUrls.data,
-            names: names
+            names: names,
+            noCache: true,
         });
     } else {
         return json({
@@ -44,20 +50,16 @@ export const loader = async ({ request }: LoaderArgs) => {
             names: names
         });
     }
-    // TODO:Supabaseの処理をFunctionに移行したい=====
-    // return json({
-    //   signedUrls: []
-    // });
 };
 
 export const meta: V2_MetaFunction = () => [{ title: "直近の記録" }];
 export default function Top() {
-    // 600秒ごとに再取得
-    useRevalidateOnInterval({
-        enabled: true,
-        interval: 600 * 1000,
-    });
     const data = useLoaderData<typeof loader>();
+    // ローディング表示管理
+    const [isLoading, setIsLoading] = useState(true);
+    const handleLoad = () => {
+        setIsLoading(false);
+    };
     const navigate = useNavigate();
 
     const displayDetail = (url: string, idx: number) => {
@@ -70,11 +72,6 @@ export default function Top() {
         });
     }
 
-    // ローディング表示管理
-    const [isLoading, setIsLoading] = useState(true);
-    const handleLoad = () => {
-        setIsLoading(false);
-    };
 
     return (
         <div>
@@ -84,16 +81,15 @@ export default function Top() {
                         最近の写真
                     </h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {data.signedUrls!.length > 0 ? data.signedUrls!.map((p, idx: number) => (
+                        {data.signedUrls!.length > 0 ? data.signedUrls!.map((p: any, idx: number) => (
                             <div className="col-span-1" key={p.signedUrl}>
                                 <div className="bg-white rounded-lg overflow-hidden shadow-md h-64 hover:scale-105">
                                     {/* 画像読み込みの間にローディング表示 */}
                                     {isLoading && <div className="items-center text-xl px-8">Loading...</div>}
-                                    <img className="h-64 cursor-pointer" src={p.signedUrl} alt={p.signedUrl} width={250} height={250}
+                                    <img className="h-64 cursor-pointer" src={`${p.signedUrl}`} alt={p.signedUrl} width={250} height={250}
                                         onLoad={handleLoad}
                                         style={isLoading ? { display: 'none' } : {}}
                                         onClick={() => displayDetail(p.signedUrl, idx)} />
-                                    {/* <div>{idx}</div> */}
                                 </div>
                             </div>
                         ))
@@ -115,30 +111,3 @@ export default function Top() {
         </div>
     );
 }
-
-// ログイン関連の処理
-// const user = useOptionalUser();
-{/* {user ? (
-    <Link
-    to="/notes"
-    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
-    >
-    View Notes for {user.email}
-    </Link>
-) : (
-    <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-    <Link
-        to="/join"
-        className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
-    >
-        Sign up
-    </Link>
-    <Link
-        to="/login"
-        className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
-    >
-        Log In
-    </Link>
-    </div>
-)} */}
-

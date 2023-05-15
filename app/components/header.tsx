@@ -2,8 +2,8 @@ import { Link } from "@remix-run/react";
 
 const Header = () => {
     return (
-        <header className="border-b items-center h-20 bg-green-200">
-            <h1 className="text-4xl text-green-500 font-semibold py-2 px-8">
+        <header className="border-b items-center h-20 bg-green-400">
+            <h1 className="text-4xl font-semibold py-2 px-8">
                 <Link to="/">
                     <span className="">Visit History Site</span>
                 </Link>

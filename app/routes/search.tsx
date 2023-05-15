@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     });
 };
 
-const junre = [
+const genre = [
     { label: '選択してください', value: '' },
     { label: '海・河川', value: '海・河川' },
     { label: '山・森林', value: '山・森林' },
@@ -37,29 +37,32 @@ export default function Search() {
     const [isLoading, setIsLoading] = useState(false);
 
     // プルダウン
-    const [selectedA, setSelectedA] = useState('');
-    const [selectedB, setSelectedB] = useState('');
-    const handleSelectA = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedA(event.target.value);
+    const [selectedGenre, setSelectedGenre] = useState('');
+    const [selectedArea, setSelectedArea] = useState('');
+    const handleSelectGenre = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedGenre(event.target.value);
     };
-    const handleSelectB = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedB(event.target.value);
+    const handleSelectArea = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedArea(event.target.value);
     };
 
     async function searchRecommendationPlaces() {
         // バリデーション
-        if (selectedA.length === 0 || selectedB.length === 0) {
+        if (selectedGenre.length === 0 || selectedArea.length === 0) {
             alert("プルダウンから値を選択してください");
             return
         }
         setIsLoading(true);
-        const questionContent = `${selectedA}の${selectedB}で良い写真が取れそうな場所を2つ教えてください。また各場所について知ることができるリンクも合わせてください。`;
+        const questionContent = `${selectedArea}の${selectedGenre}で良い写真が取れそうな場所を2つ教えてください。`;
+        // TODO:リンクや地図については最新の情報でない・リンクが404になるケースがあるため、保留
+        // また各場所に関連したリンクと地図情報を合わせて教えてください。`;
         try {
             // Dummy Data
             await sleep(1000);
             setChatGptAns('abc');
-            // const ans = await getRecommendPlace(data.ENV.OPENAI_API_KEY ?? '', questionContent);
-            // setChatGptAns(ans ?? '');
+            // 実Data設定
+            const ans = await getRecommendPlace(data.ENV.OPENAI_API_KEY ?? '', questionContent);
+            setChatGptAns(ans ?? '');
         } finally {
             setIsLoading(false);
         }
@@ -85,11 +88,11 @@ export default function Search() {
                         <div className="relative">
                             <select
                                 id="select-a"
-                                value={selectedA}
-                                onChange={handleSelectA}
+                                value={selectedGenre}
+                                onChange={handleSelectGenre}
                                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                             >
-                                {junre.map((sct) => (
+                                {genre.map((sct) => (
                                     <option value={sct.value} key={sct.value}>{sct.label}</option>
                                 ))}
                             </select>
@@ -115,8 +118,8 @@ export default function Search() {
                         <div className="relative">
                             <select
                                 id="select-b"
-                                value={selectedB}
-                                onChange={handleSelectB}
+                                value={selectedArea}
+                                onChange={handleSelectArea}
                                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                             >
                                 {aria.map((sct) => (
