@@ -1,4 +1,4 @@
-import { json, LoaderArgs } from "@remix-run/node";
+import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -30,6 +30,7 @@ const aria = [
     { label: '近畿', value: '近畿' },
 ]
 
+export const meta: V2_MetaFunction = () => [{ title: "候補地検索" }];
 export default function Search() {
     const data = useLoaderData<typeof loader>();
     const [chatGptAns, setChatGptAns] = useState<string>("");

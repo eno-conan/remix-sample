@@ -8,7 +8,7 @@ const Header = () => {
                     <span className="">Visit History Site</span>
                 </Link>
             </h1>
-            <div className="flex justify-between w-full py-4 px-8 shadow-md bg-gray-200">
+            <div className="flex justify-between w-full py-4 px-8 shadow-md bg-gray-100">
                 <Link to="/top" className="inline-block px-4 py-2 text-green-500 text-lg font-semibold hover:underline">
                     直近を振り返る
                 </Link>

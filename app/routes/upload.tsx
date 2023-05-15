@@ -52,7 +52,7 @@ export default function Upload() {
             <div className="mt-6 mx-10">
                 <input type="file" accept="image/*" onChange={handleChange} />
                 <button onClick={() => handleSubmit()} disabled={file === null}
-                    className="bg-green-400 disabled:bg-gray-200 disabled:text-gray-300 font-bold py-2 px-4 rounded">
+                    className="bg-green-400 disabled:bg-gray-100 disabled:text-gray-300 font-bold py-2 px-4 rounded">
                     送信</button>
             </div>
         </>

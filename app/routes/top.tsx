@@ -4,7 +4,6 @@ import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 import { useRevalidateOnInterval } from "~/hooks/useRevalidateOnInterval";
 
-export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
 // const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
 
@@ -51,6 +50,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     // });
 };
 
+export const meta: V2_MetaFunction = () => [{ title: "直近の記録" }];
 export default function Top() {
     // 600秒ごとに再取得
     useRevalidateOnInterval({
@@ -78,7 +78,7 @@ export default function Top() {
 
     return (
         <div>
-            <main className="relative min-h-0 bg-gray-200 sm:flex sm:items-center sm:justify-center">
+            <main className="relative min-h-0 bg-gray-100 sm:flex sm:items-center sm:justify-center">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <h1 className="text-4xl font-bold text-green-500 text-center my-8">
                         最近の写真
@@ -105,7 +105,7 @@ export default function Top() {
                     </div>
                 </div>
             </main>
-            <div className="flex justify-center items-center py-4 bg-gray-200">
+            <div className="flex justify-center items-center py-4 bg-gray-100">
                 <div className="text-center">
                     <Link to="/list">
                         <div className="text-xl bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">続きを見る</div>

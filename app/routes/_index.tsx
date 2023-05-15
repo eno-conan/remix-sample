@@ -14,7 +14,7 @@ export default function Index() {
   return (
     <>
       {/* <main className="relative min-h-0 bg-white sm:flex sm:items-center sm:justify-center"> */}
-      <main className="bg-gray-200 sm:items-center sm:justify-center mt-20">
+      <main className="bg-gray-100 sm:items-center sm:justify-center mt-20">
         <div className="px-4 relative w-full">
           <img src="/index.jpg" alt="Sample Image" className="w-full h-1/2 rounded relative my-2" />
           <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">

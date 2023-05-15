@@ -1,5 +1,5 @@
 
-import { json } from "@remix-run/node";
+import { json, V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useState, } from "react";
 // import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
@@ -40,6 +40,7 @@ interface IValidateError {
     comment: string[] | undefined;
 }
 
+export const meta: V2_MetaFunction = () => [{ title: "記録追加" }];
 export default function Add() {
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
@@ -174,7 +175,7 @@ export default function Add() {
     // ========================================
 
     return (
-        <main className="bg-gray-200 sm:items-center sm:justify-center mt-20">
+        <main className="bg-gray-100 sm:items-center sm:justify-center mt-20">
             <div className="bg-gray-100">
                 <div className="mx-10">
                     {TitleField()}

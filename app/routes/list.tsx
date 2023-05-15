@@ -1,6 +1,8 @@
+import { V2_MetaFunction } from '@remix-run/node';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+export const meta: V2_MetaFunction = () => [{ title: "一覧表示" }];
 export default function List() {
 
     const [displayWay, setDisplayWay] = useState<number>(0);
