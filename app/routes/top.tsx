@@ -1,15 +1,16 @@
 import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
-// import { cache } from "~/utils/cache";
+import { cache } from "~/utils/cache";
 
 export const loader = async ({ request }: LoaderArgs) => {
     // TODO:Supabaseの処理をFunctionに移行したい=====
-    // if (cache.has("GitHubRepos")) {
-    //     console.info('use cache')
-    //     return json(cache.get("GitHubRepos"));
-    // }
+    // 画像をsupabaseから取得する前に、cacheに情報が存在するか判定
+    if (cache.has("topImagesCache")) {
+        console.info('use cache')
+        return json(cache.get("topImagesCache"));
+    }
+    // cacheから情報が取得不可の場合は、supabaseからdata取得
     const supabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!)
     const names: string[] = []
     const { data, error } = await supabaseClient
@@ -31,14 +32,16 @@ export const loader = async ({ request }: LoaderArgs) => {
         })
     }
     if (names.length > 0) {
+        console.info("get from supabase")
         const signedUrls = await supabaseClient
             .storage
             .from('place-images')
             .createSignedUrls(names, 600)
-        // cache.set("GitHubRepos", {
-        //     signedUrls: signedUrls.data,
-        //     names: names
-        // }, 1 * 1 * 1000);
+        // cacheに画像情報を設定
+        cache.set("topImagesCache", {
+            signedUrls: signedUrls.data,
+            names: names
+        }, 1 * 1 * 1000);
         return json({
             signedUrls: signedUrls.data,
             names: names,
@@ -54,14 +57,10 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export const meta: V2_MetaFunction = () => [{ title: "直近の記録" }];
 export default function Top() {
-    const data = useLoaderData<typeof loader>();
     // ローディング表示管理
-    const [isLoading, setIsLoading] = useState(true);
-    const handleLoad = () => {
-        setIsLoading(false);
-    };
-    const navigate = useNavigate();
+    const data: any = useLoaderData<typeof loader>();
 
+    const navigate = useNavigate();
     const displayDetail = (url: string, idx: number) => {
         // TODO:このままのURLの場合、参照リンクにした場合に表示できなくなるので、もう少し工夫が必要
         navigate("/detail", {
@@ -81,18 +80,18 @@ export default function Top() {
                         最近の写真
                     </h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {data.signedUrls!.length > 0 ? data.signedUrls!.map((p: any, idx: number) => (
-                            <div className="col-span-1" key={p.signedUrl}>
-                                <div className="bg-white rounded-lg overflow-hidden shadow-md h-64 hover:scale-105">
-                                    {/* 画像読み込みの間にローディング表示 */}
-                                    {isLoading && <div className="items-center text-xl px-8">Loading...</div>}
-                                    <img className="h-64 cursor-pointer" src={`${p.signedUrl}`} alt={p.signedUrl} width={250} height={250}
-                                        onLoad={handleLoad}
-                                        style={isLoading ? { display: 'none' } : {}}
-                                        onClick={() => displayDetail(p.signedUrl, idx)} />
+                        {data.signedUrls!.length > 0 ?
+                            data.signedUrls!.map((p: any, idx: number) => (
+                                <div className="col-span-1" key={p.signedUrl}>
+                                    <div className="bg-white rounded-lg overflow-hidden shadow-md h-64 hover:scale-105">
+                                        {/* 画像読み込みの間にローディング表示 */}
+                                        {!data && <div className="items-center text-xl px-8">Loading...</div>}
+                                        <img className="h-64 cursor-pointer" src={`${p.signedUrl}`} alt={p.signedUrl} width={250} height={250}
+                                            // style={isLoading ? { display: 'none' } : {}}
+                                            onClick={() => displayDetail(p.signedUrl, idx)} />
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ))
                             :
                             <>
                                 <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">画像が登録されていません</div>

@@ -14,7 +14,7 @@ https://github.com/remix-run/remix/issues/4236#issuecomment-1264444539
   - Nextjsの場合、`revalidate`を使用して実装になるが、Remixの場合は異なるので、その実装方法確認
 - [リンククリックから画面表示までのプログレスバー表示](https://zenn.dev/qaynam/articles/611ab136a93e89)
   - emotioncssというライブラリを用いて実装
-
+- [Node-cacheを利用した方法](https://stackoverflow.com/questions/72661999/how-do-i-use-in-memory-cache-in-remix-run-dev-mode)
 
 ```sh
 npx create-remix@latest --template remix-run/indie-stack

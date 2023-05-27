@@ -164,7 +164,7 @@ export default function Add() {
     const ImageField = () => {
         return (
             <>
-                <label className="flex w-full flex-col gap-1">
+                <label className="flex w-1/4 flex-col gap-1">
                     <label htmlFor="image">画像登録</label>
                     <UnRequiredFieldMsg />
                     <input id="image" type="file" accept="image/*" onChange={handleChange} />
