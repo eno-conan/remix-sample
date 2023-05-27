@@ -39,6 +39,7 @@
     "@remix-run/serve": "^1.15.0",
     "@supabase/auth-helpers-remix": "^0.1.9",
     "@supabase/supabase-js": "^2.21.0",
+    "@types/react-lazy-load-image-component": "^1.5.3",
     "aws-sdk": "^2.1373.0",
     "bcryptjs": "^2.4.3",
     "isbot": "^3.6.8",

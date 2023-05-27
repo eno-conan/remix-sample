@@ -1,6 +1,7 @@
 import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { createClient } from "@supabase/supabase-js";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { cache } from "~/utils/cache";
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -71,9 +72,8 @@ export default function Top() {
         });
     }
 
-
     return (
-        <div>
+        <>
             <main className="relative min-h-0 bg-gray-100 sm:flex sm:items-center sm:justify-center">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <h1 className="text-4xl font-bold text-green-500 text-center my-8">
@@ -83,12 +83,11 @@ export default function Top() {
                         {data.signedUrls!.length > 0 ?
                             data.signedUrls!.map((p: any, idx: number) => (
                                 <div className="col-span-1" key={p.signedUrl}>
-                                    <div className="bg-white rounded-lg overflow-hidden shadow-md h-64 hover:scale-105">
-                                        {/* 画像読み込みの間にローディング表示 */}
-                                        {!data && <div className="items-center text-xl px-8">Loading...</div>}
-                                        <img className="h-64 cursor-pointer" src={`${p.signedUrl}`} alt={p.signedUrl} width={250} height={250}
-                                            // style={isLoading ? { display: 'none' } : {}}
-                                            onClick={() => displayDetail(p.signedUrl, idx)} />
+                                    <div className="bg-white rounded-lg overflow-hidden shadow-md h-60 hover:scale-105">
+                                        <LazyLoadImage src={`${p.signedUrl}`}
+                                            alt={p.signedUrl} width={300}
+                                            effect="black-and-white"
+                                        />
                                     </div>
                                 </div>
                             ))
@@ -107,6 +106,6 @@ export default function Top() {
                     </Link>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
