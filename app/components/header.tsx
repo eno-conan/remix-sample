@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react";
 const topicLinkWithStyle = (path: string, topic: string) => {
     return (
         <>
-            <Link to={path} className="px-4 py-2 text-green-500 text-lg font-semibold hover:underline">
+            <Link to={path} className="px-4 py-2 text-green-500 text-md font-semibold hover:underline">
                 {topic}
             </Link>
         </>)
@@ -11,7 +11,7 @@ const topicLinkWithStyle = (path: string, topic: string) => {
 
 const Header = () => {
     return (
-        <header className="border-b items-center h-14 bg-green-400">
+        <header className="border-b items-center h-14 bg-green-400 mb-10">
             <h1 className="text-2xl font-semibold px-4">
                 <Link to="/">
                     <span className="">Visit History Site</span>
