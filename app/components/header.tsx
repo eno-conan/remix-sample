@@ -29,7 +29,7 @@ const Header = () => {
                     </Link>
                 </h1>
                 <div className="flex justify-end p-2">
-                    <div className="relative">
+                    <div className="relative pr-2">
                         <button
                             type="button"
                             className="p-2 focus:bg-gray-200" //Tabキーでフォーカスしたときに、フォーカスしたことが分かるようにする。

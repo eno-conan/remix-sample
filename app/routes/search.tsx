@@ -54,7 +54,7 @@ export default function Search() {
         }
         setIsLoading(true);
         const questionContent = `${selectedArea}の${selectedGenre}で良い写真が取れそうな場所を2つ教えてください。`;
-        // TODO:リンクや地図については最新の情報でない・リンクが404になるケースがあるため、保留
+        // TODO:リンクや地図については最新の情報でない・リンクが404になるケースあり、bingAPIとの連携を導入する必要があるかもしれない
         // また各場所に関連したリンクと地図情報を合わせて教えてください。`;
         try {
             // Dummy Data

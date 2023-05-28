@@ -57,10 +57,10 @@ export default function List() {
 
 
                 {/* TODO:切り替えるときにアニメーションとか入れたい */}
-                <div className="grid grid-cols-2 gap-4 mt-4 mx-4">
+                <div className="grid grid-cols-2 gap-4 mt-2 mx-2">
                     {items.slice(0, 20).map((item) => (
                         <Link key={item.id} to={`/`}>
-                            <div className="flex items-center bg-white shadow-md p-4 cursor-pointer mx-2">
+                            <div className="flex items-center bg-white shadow-md p-2 cursor-pointer mx-2">
                                 <div className="flex-1">
                                     <img src={item.imageUrl} alt="Item" className="w-full rounded-md" />
                                 </div>

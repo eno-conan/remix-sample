@@ -13,9 +13,19 @@ export default function Index() {
 
   return (
     <>
-      <main className="bg-gray-100 mt-20">
-        <div className="px-4 mt-12">
-          {/* <img src="/index.jpg" alt="Sample Image" className="w-full h-1/2 rounded my-2" /> */}
+      <main className="bg-gray-100 mt-10 flex">
+        <div className="px-2 mt-2">
+          <div className="flex flex-wrap -mx-2">
+            <div className="w-1/3 px-2">
+              <img src="/index.jpg" alt="Image 1" className="w-full h-full rounded" />
+            </div>
+            <div className="w-1/3 px-2">
+              <img src="/index2.jpg" alt="Image 2" className="h-full w-full rounded" />
+            </div>
+            <div className="w-1/3 px-2">
+              <img src="/index.jpg" alt="Image 3" className="w-full h-full rounded" />
+            </div>
+          </div>
           {/* <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
             <p className="text-center max-w-md px-4">{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod faucibus dui vitae tempus. Donec nec urna at enim facilisis dignissim. Sed non arcu rhoncus, bibendum sem a, sagittis velit. Nunc aliquam auctor orci, sed gravida felis rhoncus vel. Praesent gravida nunc id tellus cursus vestibulum."}</p>
           </div> */}

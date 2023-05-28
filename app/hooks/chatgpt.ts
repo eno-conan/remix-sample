@@ -1,6 +1,4 @@
 import { Configuration, OpenAIApi } from "openai";
-// import * as dotenv from "dotenv";
-// dotenv.config();
 
 export const getRecommendPlace = async (openApiKey: string, questionContent: string) => {
     const configuration = new Configuration({
