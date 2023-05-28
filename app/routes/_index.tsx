@@ -13,13 +13,12 @@ export default function Index() {
 
   return (
     <>
-      {/* <main className="relative min-h-0 bg-white sm:flex sm:items-center sm:justify-center"> */}
-      <main className="bg-gray-100 sm:items-center sm:justify-center mt-20">
-        <div className="px-4 relative w-full">
-          <img src="/index.jpg" alt="Sample Image" className="w-full h-1/2 rounded relative my-2" />
-          <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
+      <main className="bg-gray-100 mt-20">
+        <div className="px-4 mt-4">
+          {/* <img src="/index.jpg" alt="Sample Image" className="w-full h-1/2 rounded my-2" /> */}
+          {/* <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
             <p className="text-center max-w-md px-4">{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod faucibus dui vitae tempus. Donec nec urna at enim facilisis dignissim. Sed non arcu rhoncus, bibendum sem a, sagittis velit. Nunc aliquam auctor orci, sed gravida felis rhoncus vel. Praesent gravida nunc id tellus cursus vestibulum."}</p>
-          </div>
+          </div> */}
         </div>
       </main>
     </>
