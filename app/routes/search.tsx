@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 const genre = [
-    { label: '選択してください', value: '' },
+    { label: '未選択', value: '' },
     { label: '海・河川', value: '海・河川' },
     { label: '山・森林', value: '山・森林' },
     { label: 'アクティビティ', value: 'アクティビティ' },
@@ -23,7 +23,7 @@ const genre = [
 ];
 
 const aria = [
-    { label: '選択してください', value: '' },
+    { label: '未選択', value: '' },
     { label: '北海道', value: '北海道' },
     { label: '東北', value: '東北' },
     { label: '関東', value: '関東' },
@@ -79,18 +79,18 @@ export default function Search() {
 
     return (
         <>
-            <main className="bg-gray-100 sm:items-center sm:justify-center mt-20 pb-10">
-                <div className="justify-center items-center py-4">
-                    <div className="w-full px-6">
+            <main className="bg-gray-100 mt-20 pb-10">
+                <div className="py-4">
+                    <div className="sm:items-center sm:justify-center px-6">
                         <label htmlFor="select-a" className="block text-gray-700 font-bold my-2">
                             ジャンル
                         </label>
-                        <div className="relative">
+                        <div className="relative sm:items-center sm:justify-center w-1/2">
                             <select
                                 id="select-a"
                                 value={selectedGenre}
                                 onChange={handleSelectGenre}
-                                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow focus:outline-none focus:shadow-outline"
+                                className="appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow focus:outline-none focus:shadow-outline"
                             >
                                 {genre.map((sct) => (
                                     <option value={sct.value} key={sct.value}>{sct.label}</option>
@@ -111,11 +111,11 @@ export default function Search() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full px-6">
+                    <div className="sm:items-center sm:justify-center px-6">
                         <label htmlFor="select-b" className="block text-gray-700 font-bold my-2">
                             エリア
                         </label>
-                        <div className="relative">
+                        <div className="relative sm:items-center sm:justify-center w-1/2">
                             <select
                                 id="select-b"
                                 value={selectedArea}
@@ -166,9 +166,9 @@ export default function Search() {
                                 ))}
                                 {chatGptAns ?
                                     <>
-                                        <div className="mt-4">
+                                        <div className="text-center my-4">
                                             <button
-                                                className="w-1/6 text-xl disabled:bg-gray-700 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                                className="w-1/8 text-xl disabled:bg-gray-700 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                                                 // onClick={() => searchRecommendationPlaces()}
                                                 disabled={true}>
                                                 追加で質問</button>

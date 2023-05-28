@@ -74,7 +74,7 @@ export default function Top() {
 
     return (
         <>
-            <main className="relative min-h-0 bg-gray-100 sm:flex sm:items-center sm:justify-center">
+            <main className="min-h-0 bg-gray-100 sm:flex sm:items-center sm:justify-center">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <h1 className="text-4xl font-bold text-green-500 text-center my-8">
                         最近の写真

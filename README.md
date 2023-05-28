@@ -16,6 +16,8 @@ https://github.com/remix-run/remix/issues/4236#issuecomment-1264444539
   - emotioncssというライブラリを用いて実装
 - [Node-cacheを利用した方法](https://stackoverflow.com/questions/72661999/how-do-i-use-in-memory-cache-in-remix-run-dev-mode)
 - [react-lazy-load-image](https://www.freecodecamp.org/news/how-to-lazy-load-images-in-react/)
+- [relativeとabsoluteなど、要素の重ね具合について](https://px-wing.hatenablog.com/entry/2021/02/11/223649)
+- [ハンバーガーメニュー](https://wywy.jp/blogs/tailwindcss-hamburger-code)
 
 ```sh
 npx create-remix@latest --template remix-run/indie-stack
