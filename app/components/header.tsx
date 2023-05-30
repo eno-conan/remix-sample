@@ -23,13 +23,13 @@ const Header = () => {
     return (
         <header className="border-b items-center h-14 bg-green-400 mb-10">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-semibold pl-4">
+                <h1 className="text-2xl font-semibold pl-6">
                     <Link to="/">
-                        <span className="">Visit History Site</span>
+                        <span>Visit History</span>
                     </Link>
                 </h1>
-                <div className="flex justify-end p-2">
-                    <div className="relative pr-2">
+                <div className="flex justify-end p-1">
+                    <div className="relative pr-1">
                         <button
                             type="button"
                             className="p-2 focus:bg-gray-200" //Tabキーでフォーカスしたときに、フォーカスしたことが分かるようにする。
@@ -46,13 +46,13 @@ const Header = () => {
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                className="w-6 h-6 text-gray-800"
+                                className="w-8 h-8 text-gray-700"
                             >
                                 <path d="M3 12h18M3 6h18M3 18h18" />
                             </svg>
                         </button>
                         {isOpen && (
-                            <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg">
+                            <div className="absolute right-2 mt-2 w-48 bg-white border border-gray-300 rounded shadow-2xl">
                                 <ul>
                                     {topicLinkWithStyle("/top", "直近の写真", setIsOpen)}
                                     {topicLinkWithStyle("/list", "過去の写真", setIsOpen)}
