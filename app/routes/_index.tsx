@@ -6,7 +6,13 @@ import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 
 export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
 
-// const samplePicturesArr = ['1', '2', '3', '4', '5', '6']
+const pictureComp = (srcName: string) => {
+  return (
+    <div className="md:w-1/3 sm:w-1/2 px-2 my-2">
+      <img src={srcName} alt={srcName} className="w-full h-full rounded" />
+    </div>
+  )
+}
 
 
 export default function Index() {
@@ -15,38 +21,15 @@ export default function Index() {
     <>
       <main className="bg-gray-100 mt-10 flex">
         <div className="px-2 my-2">
-          <div className="flex flex-wrap my-2">
-            <div className="w-1/3 px-2">
-              <img src="/index.jpg" alt="Image 1" className="w-full h-full rounded" />
-            </div>
-            <div className="w-1/3 px-2">
-              <img src="/index2.jpg" alt="Image 2" className="h-full w-full rounded" />
-            </div>
-            <div className="w-1/3 px-2">
-              <img src="/index.jpg" alt="Image 3" className="w-full h-full rounded" />
-            </div>
+          <div className="flex flex-wrap">
+            {pictureComp('/index.jpg')}
+            {pictureComp('/index2.jpg')}
+            {pictureComp('/index.jpg')}
           </div>
-          <div className="flex flex-wrap my-2">
-            <div className="w-1/3 px-2">
-              <img src="/index.jpg" alt="Image 1" className="w-full h-full rounded" />
-            </div>
-            <div className="w-1/3 px-2">
-              <img src="/index2.jpg" alt="Image 2" className="h-full w-full rounded" />
-            </div>
-            <div className="w-1/3 px-2">
-              <img src="/index.jpg" alt="Image 3" className="w-full h-full rounded" />
-            </div>
-          </div>
-          <div className="flex flex-wrap my-2">
-            <div className="w-1/3 px-2">
-              <img src="/index.jpg" alt="Image 1" className="w-full h-full rounded" />
-            </div>
-            <div className="w-1/3 px-2">
-              <img src="/index2.jpg" alt="Image 2" className="h-full w-full rounded" />
-            </div>
-            <div className="w-1/3 px-2">
-              <img src="/index.jpg" alt="Image 3" className="w-full h-full rounded" />
-            </div>
+          <div className="flex flex-wrap">
+            {pictureComp('/index.jpg')}
+            {pictureComp('/index2.jpg')}
+            {pictureComp('/index.jpg')}
           </div>
         </div>
         {/* <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
