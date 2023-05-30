@@ -8,7 +8,9 @@ const Layout = ({ children }: Props) => {
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
-            {children}
+            <main className="bg-gray-100 sm:items-center sm:justify-center">
+                {children}
+            </main>
             <Footer />
         </div>
     );

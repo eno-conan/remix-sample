@@ -2,6 +2,7 @@ import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { createClient } from "@supabase/supabase-js";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import PageTitle from "~/components/pageTitle";
 import { cache } from "~/utils/cache";
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -74,31 +75,27 @@ export default function Top() {
 
     return (
         <>
-            <main className="min-h-0 bg-gray-100 sm:flex sm:items-center sm:justify-center">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <h1 className="text-4xl font-bold text-green-500 text-center my-8">
-                        最近の写真
-                    </h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {data.signedUrls!.length > 0 ?
-                            data.signedUrls!.map((p: any, idx: number) => (
-                                <div className="col-span-1" key={p.signedUrl}>
-                                    <div className="bg-white rounded-lg overflow-hidden shadow-md h-60 hover:scale-105">
-                                        <LazyLoadImage src={`${p.signedUrl}`}
-                                            alt={p.signedUrl} width={300}
-                                            effect="black-and-white"
-                                        />
-                                    </div>
-                                </div>
-                            ))
-                            :
-                            <>
-                                <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">画像が登録されていません</div>
-                            </>
-                        }
-                    </div>
+            <PageTitle pageTitle="最近の写真" />
+            <div className="px-2 my-2">
+                <div className="flex flex-wrap">
+                    {data.signedUrls!.length > 0 ?
+                        data.signedUrls!.map((p: any, idx: number) => (
+                            <div className="md:w-1/3 sm:w-1/2 m-2 px-2 rounded-lg overflow-hidden shadow-md hover:scale-105"
+                                key={p.signedUrl}>
+                                <LazyLoadImage src={`${p.signedUrl}`}
+                                    alt={p.signedUrl}
+                                    effect="opacity"
+                                    className="w-full h-full rounded"
+                                />
+                            </div>
+                        ))
+                        :
+                        <>
+                            <div className="bg-white sm:flex sm:items-center sm:justify-center mt-4 text-xl">画像が登録されていません</div>
+                        </>
+                    }
                 </div>
-            </main>
+            </div>
             <div className="flex justify-center items-center py-4 bg-gray-100">
                 <div className="text-center">
                     <Link to="/list">

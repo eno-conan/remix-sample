@@ -3,6 +3,7 @@ import { useLoaderData } from "@remix-run/react";
 import React from "react";
 import { useEffect, useState } from "react";
 import { BeatLoader, PropagateLoader } from "react-spinners";
+import PageTitle from "~/components/pageTitle";
 import { getRecommendPlace } from "~/hooks/chatgpt"
 
 // 画面表示時にGoogle API Keyの値取得
@@ -29,6 +30,26 @@ const aria = [
     { label: '関東', value: '関東' },
     { label: '近畿', value: '近畿' },
 ]
+
+// プルダウンの矢印
+const Pointer = () => {
+    return (
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+            >
+                <path
+                    fillRule="evenodd"
+                    d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        </div>
+    )
+}
+
 
 export const meta: V2_MetaFunction = () => [{ title: "候補地検索" }];
 export default function Search() {
@@ -61,8 +82,8 @@ export default function Search() {
             await sleep(1000);
             setChatGptAns('abc');
             // 実Data設定
-            const ans = await getRecommendPlace(data.ENV.OPENAI_API_KEY ?? '', questionContent);
-            setChatGptAns(ans ?? '');
+            // const ans = await getRecommendPlace(data.ENV.OPENAI_API_KEY ?? '', questionContent);
+            // setChatGptAns(ans ?? '');
         } finally {
             setIsLoading(false);
         }
@@ -79,108 +100,83 @@ export default function Search() {
 
     return (
         <>
-            <main className="bg-gray-100 mt-20 pb-10">
-                <div className="py-4">
-                    <div className="sm:items-center sm:justify-center px-6">
-                        <label htmlFor="select-a" className="block text-gray-700 font-bold my-2">
-                            ジャンル
-                        </label>
-                        <div className="relative sm:items-center sm:justify-center w-1/2">
-                            <select
-                                id="select-a"
-                                value={selectedGenre}
-                                onChange={handleSelectGenre}
-                                className="appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow focus:outline-none focus:shadow-outline"
-                            >
-                                {genre.map((sct) => (
-                                    <option value={sct.value} key={sct.value}>{sct.label}</option>
-                                ))}
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg
-                                    className="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="sm:items-center sm:justify-center px-6">
-                        <label htmlFor="select-b" className="block text-gray-700 font-bold my-2">
-                            エリア
-                        </label>
-                        <div className="relative sm:items-center sm:justify-center w-1/2">
-                            <select
-                                id="select-b"
-                                value={selectedArea}
-                                onChange={handleSelectArea}
-                                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                            >
-                                {aria.map((sct) => (
-                                    <option value={sct.value} key={sct.value}>{sct.label}</option>
-                                ))}
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg
-                                    className="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M6.293 7.293a1 1 0 011.414 0L10 9.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+            <PageTitle pageTitle="候補地検索" />
+            <div className="sm:items-center sm:justify-center px-6">
+                <label htmlFor="select-a" className="block text-gray-700 font-bold my-2">
+                    ジャンル
+                </label>
+                <div className="sm:items-center sm:justify-center w-1/2">
+                    {/* <div className="relative sm:items-center sm:justify-center w-1/2"> */}
+                    <select
+                        id="select-a"
+                        value={selectedGenre}
+                        onChange={handleSelectGenre}
+                        className="appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow focus:outline-none focus:shadow-outline"
+                    >
+                        {genre.map((sct) => (
+                            <option value={sct.value} key={sct.value}>{sct.label}</option>
+                        ))}
+                    </select>
+                    {/* {Pointer()} */}
                 </div>
-                <div>
-                    <div className="text-center my-4">
-                        <button
-                            className="w-1/8 text-xl bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-700"
-                            onClick={() => searchRecommendationPlaces()}
-                            disabled={isLoading}>
-                            聞いてみる</button>
-                    </div>
-                    <div className="pl-8 text-xl">以下に回答を表示します（～20秒かかります）</div>
-                    {isLoading ?
-                        <>
-                            <BeatLoaderAria />
-                        </>
-                        :
-                        <>
-                            <div className="px-6 font-semibold pt-4">
-                                {chatGptAns.split("\n").map((line, index) => (
-                                    <React.Fragment key={index}>
-                                        {line}
-                                        <br />
-                                    </React.Fragment>
-                                ))}
-                                {chatGptAns ?
-                                    <>
-                                        <div className="text-center my-4">
-                                            <button
-                                                className="w-1/8 text-xl disabled:bg-gray-700 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                                                // onClick={() => searchRecommendationPlaces()}
-                                                disabled={true}>
-                                                追加で質問</button>
-                                        </div>
-                                    </>
-                                    :
-                                    <></>}
-                            </div>
-                        </>
-                    }
+            </div>
+            <div className="sm:items-center sm:justify-center px-6">
+                <label htmlFor="select-b" className="block text-gray-700 font-bold my-2">
+                    エリア
+                </label>
+                {/* <div className="relative sm:items-center sm:justify-center w-1/2"> */}
+                <div className="sm:items-center sm:justify-center w-1/2">
+                    <select
+                        id="select-b"
+                        value={selectedArea}
+                        onChange={handleSelectArea}
+                        className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                        {aria.map((sct) => (
+                            <option value={sct.value} key={sct.value}>{sct.label}</option>
+                        ))}
+                    </select>
+                    {/* {Pointer()} */}
                 </div>
-            </main>
+            </div>
+            <div>
+                <div className="text-center mt-4">
+                    <button
+                        className="w-1/8 text-xl bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-700"
+                        onClick={() => searchRecommendationPlaces()}
+                        disabled={isLoading}>
+                        聞いてみる</button>
+                    <div className="text-xl">回答表示に20秒ほどいただきます。</div>
+                </div>
+                {isLoading ?
+                    <>
+                        <BeatLoaderAria />
+                    </>
+                    :
+                    <>
+                        <div className="px-6 font-semibold pt-4">
+                            {chatGptAns.split("\n").map((line, index) => (
+                                <React.Fragment key={index}>
+                                    {line}
+                                    <br />
+                                </React.Fragment>
+                            ))}
+                            {chatGptAns ?
+                                <>
+                                    <div className="text-center my-4">
+                                        <button
+                                            className="w-1/8 text-xl disabled:bg-gray-700 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                            // onClick={() => searchRecommendationPlaces()}
+                                            disabled={true}>
+                                            追加で質問</button>
+                                    </div>
+                                </>
+                                :
+                                <></>}
+                        </div>
+                    </>
+                }
+            </div>
         </>
     )
 }

@@ -9,6 +9,7 @@ import { createClient } from "@supabase/supabase-js";
 import { formData } from "~/utils/validation";
 import { ZodError } from 'zod';
 import GoogleMapField from "~/components/GoogleMapField";
+import PageTitle from "~/components/pageTitle";
 
 interface Position {
     lat: number;
@@ -61,16 +62,6 @@ export default function Add() {
     // 中央の表示位置更新（数か所くらい起点を用意する予定）
     const updateStartPosition = (place: string) => {
         setPosition(position => postionOsaka);
-    }
-
-    const ChangeCenterPlaceCompo = () => {
-        return (<>
-            <label htmlFor="position">訪問場所</label>
-            <UnRequiredFieldMsg />
-            <button type="button" className="bg-green-200 border-e-2" onClick={() => updateStartPosition('Osaka')}>
-                大阪駅
-            </button>
-        </>)
     }
 
     // ========================================
@@ -144,6 +135,7 @@ export default function Add() {
             {errors?.title && FormErrorMsg(errors?.title[0])}
         </>)
     }
+
     const CommentField = () => {
         return (
             <>
@@ -161,10 +153,11 @@ export default function Add() {
             </>
         )
     }
+
     const ImageField = () => {
         return (
             <>
-                <label className="flex w-1/4 flex-col gap-1">
+                <label className="flex md:w-1/2 sm:w-2/3 flex-col gap-1">
                     <label htmlFor="image">画像登録</label>
                     <UnRequiredFieldMsg />
                     <input id="image" type="file" accept="image/*" onChange={handleChange} />
@@ -172,24 +165,47 @@ export default function Add() {
             </>
         )
     }
+
+    const ChangeCenterPlaceCompo = () => {
+        return (<>
+            <label className="flex md:w-1/2 sm:w-2/3 flex-col gap-1">
+                <label htmlFor="position">訪問場所</label>
+                <UnRequiredFieldMsg />
+                {PlaceButton('大阪駅', 'Osaka')}
+                {PlaceButton('福岡駅', 'Fukuoka')}
+            </label>
+        </>)
+    }
+    const PlaceButton = (placeLabel: string, placeRome: string) => {
+        return (
+            <>
+                <button type="button" className="bg-green-200 border-e-2" onClick={() => updateStartPosition(placeRome)}>
+                    {placeLabel}
+                </button>
+            </>
+
+        )
+    }
+
     // ========================================
 
     return (
-        <main className="bg-gray-100 sm:items-center sm:justify-center mt-20">
+        <>
+            <PageTitle pageTitle="記録追加" />
             <div className="bg-gray-100">
-                <div className="mx-10">
+                <div className="mx-8">
                     {TitleField()}
                 </div>
-                <div className="mx-10 mt-4">
+                <div className="mx-8 mt-4">
                     {CommentField()}
                 </div>
-                <div className="mx-10 mt-6">
+                <div className="mx-8 mt-6">
                     {ImageField()}
                 </div>
-                <div className="mx-10 mt-6">
+                <div className="mx-8 mt-6">
                     {ChangeCenterPlaceCompo()}
                 </div>
-                <div className="mx-10 mt-2">
+                <div className="mx-8 mt-4">
                     <GoogleMapField position={position} setPosition={setPosition} apiKey={data.ENV.GOOGLE_API_KEY!} />
                 </div>
                 <div className="mr-10 my-6 text-right">
@@ -202,6 +218,6 @@ export default function Add() {
                     </button>
                 </div>
             </div>
-        </main>
+        </>
     )
 }

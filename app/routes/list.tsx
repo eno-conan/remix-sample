@@ -1,6 +1,7 @@
 import { V2_MetaFunction } from '@remix-run/node';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PageTitle from '~/components/pageTitle';
 
 export const meta: V2_MetaFunction = () => [{ title: "一覧表示" }];
 export default function List() {
@@ -53,26 +54,22 @@ export default function List() {
 
     return (
         <>
-            <main className="bg-gray-100 sm:items-center sm:justify-center mt-20 pb-10">
-
-
-                {/* TODO:切り替えるときにアニメーションとか入れたい */}
-                <div className="grid grid-cols-2 gap-4 mt-2 mx-2">
-                    {items.slice(0, 20).map((item) => (
-                        <Link key={item.id} to={`/`}>
-                            <div className="flex items-center bg-white shadow-md p-2 cursor-pointer mx-2">
-                                <div className="flex-1">
-                                    <img src={item.imageUrl} alt="Item" className="w-full rounded-md" />
-                                </div>
-                                <div className="hidden md:block ml-2">
-                                    <div className="font-bold text-lg mb-2">{item.title}</div>
-                                    <div className="text-gray-500">{item.description}</div>
-                                </div>
+            <PageTitle pageTitle="これまでの写真" />
+            <div className="grid grid-cols-2 gap-4 my-2 mx-2">
+                {items.slice(0, 20).map((item) => (
+                    <Link key={item.id} to={`/`}>
+                        <div className="flex items-center bg-white shadow-md p-2 cursor-pointer">
+                            <div className="flex-1">
+                                <img src={item.imageUrl} alt="Item" className="w-full rounded-md" />
                             </div>
-                        </Link>
-                    ))}
-                </div>
-            </main>
+                            <div className="hidden md:block ml-2">
+                                <div className="font-bold text-lg mb-2">{item.title}</div>
+                                <div className="text-gray-500">{item.description}</div>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
         </>
     );
 

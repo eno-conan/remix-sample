@@ -4,7 +4,7 @@ import { json, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 // import { useState } from "react";
 // import { Link } from 'react-router-dom';
 
-export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
+export const meta: V2_MetaFunction = () => [{ title: "Yourself Visit History Site" }];
 
 const pictureComp = (srcName: string) => {
   return (
@@ -19,23 +19,22 @@ export default function Index() {
 
   return (
     <>
-      <main className="bg-gray-100 mt-10 flex">
-        <div className="px-2 my-2">
-          <div className="flex flex-wrap">
-            {pictureComp('/index.jpg')}
-            {pictureComp('/index2.jpg')}
-            {pictureComp('/index.jpg')}
-          </div>
-          <div className="flex flex-wrap">
-            {pictureComp('/index.jpg')}
-            {pictureComp('/index2.jpg')}
-            {pictureComp('/index.jpg')}
-          </div>
+
+      <div className="px-2 my-2">
+        <div className="flex flex-wrap">
+          {pictureComp('/index.jpg')}
+          {pictureComp('/index2.jpg')}
+          {pictureComp('/index.jpg')}
         </div>
-        {/* <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
+        <div className="flex flex-wrap">
+          {pictureComp('/index.jpg')}
+          {pictureComp('/index2.jpg')}
+          {pictureComp('/index.jpg')}
+        </div>
+      </div>
+      {/* <div className="absolute top-0 left-0 text-xl w-full h-full flex justify-center items-center text-white">
             <p className="text-center max-w-md px-4">{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod faucibus dui vitae tempus. Donec nec urna at enim facilisis dignissim. Sed non arcu rhoncus, bibendum sem a, sagittis velit. Nunc aliquam auctor orci, sed gravida felis rhoncus vel. Praesent gravida nunc id tellus cursus vestibulum."}</p>
           </div> */}
-      </main>
     </>
   );
 }

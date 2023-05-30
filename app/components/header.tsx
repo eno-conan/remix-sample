@@ -21,7 +21,7 @@ const Header = () => {
     };
 
     return (
-        <header className="border-b items-center h-14 bg-green-400 mb-10">
+        <header className="border-b items-center h-14 bg-green-400">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold pl-6">
                     <Link to="/">
@@ -52,7 +52,7 @@ const Header = () => {
                             </svg>
                         </button>
                         {isOpen && (
-                            <div className="absolute right-2 mt-2 w-48 bg-white border border-gray-300 rounded shadow-2xl">
+                            <div className="absolute right-1 mt-2 w-36 bg-white border border-gray-300 rounded shadow-2xl">
                                 <ul>
                                     {topicLinkWithStyle("/top", "直近の写真", setIsOpen)}
                                     {topicLinkWithStyle("/list", "過去の写真", setIsOpen)}

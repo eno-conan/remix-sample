@@ -6,8 +6,8 @@ interface Position {
     lng: number;
 }
 const containerStyle = {
-    width: '50%',
-    height: '250px',
+    width: '100%',
+    height: '300px',
 };
 const center = {
     lat: 35.681167,
@@ -43,15 +43,18 @@ const GoogleMapField = (props: IProps) => {
     return (
         <>
             {isLoaded ?
-                (<GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={props.position ?? center}
-                    zoom={13}
-                    onClick={handleMapClick}
-                >
-                    <Marker position={props.position ?? postionTokyo} />
-                    <input id="position" type="hidden" value={`${props.position?.lat!}/${props.position?.lng!}`} />
-                </GoogleMap>
+                (
+                    <div className="flex md:w-1/2 flex-col gap-1">
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={props.position ?? center}
+                            zoom={13}
+                            onClick={handleMapClick}
+                        >
+                            <Marker position={props.position ?? postionTokyo} />
+                            <input id="position" type="hidden" value={`${props.position?.lat!}/${props.position?.lng!}`} />
+                        </GoogleMap>
+                    </div>
                 )
                 :
                 <></>
